@@ -47,4 +47,29 @@ Execution time is limited to 10 minutes for the whole submission. Some tests may
 
 
 firstCommon :: Eq a => [a] -> a
-firstCommon = undefined
+
+firstCommon listItems = result 
+    where
+        result = firstItemWithFreq freqList listItems maxFreq
+        firstItemWithFreq :: [Integer] -> [a] -> Integer -> a
+        firstItemWithFreq (x:xs) (y:ys) target_freq 
+            | x == target_freq = y
+            | otherwise = firstItemWithFreq xs ys target_freq
+
+        maxFreq = maxFrequency freqList 0 
+        maxFrequency :: [Integer] -> Integer -> Integer
+        maxFrequency [] res = res
+        maxFrequency (x:xs) res = maxFrequency xs (if x > res then x else res)
+
+        freqList = frequencyList listItems listItems []
+        frequencyList :: Eq a => [a] -> [a] -> [Integer] -> [Integer]
+        frequencyList [] original result = result
+        frequencyList (x:xs) original result = frequencyList xs original (result ++ [(getFrequency x original 0)]) 
+
+        getFrequency :: Eq a => a -> [a] -> Integer -> Integer
+        getFrequency a [] res = res
+        getFrequency a (x:xs) res = getFrequency a xs (if x == a then res + 1 else res)
+
+
+
+
