@@ -49,10 +49,9 @@ This task is worth 10 POINTS.
 -- Magic
 --
 magic :: (a -> (b -> c)) -> ([a] -> ([b] -> [c]))
-magic = undefined
-
-
-
+magic f [] _ = []
+magic f _ [] = []
+magic f (x:xs) (y:ys) = (f x y) : (magic f xs ys)  
 -- EASY
 -- The function increments the number at index i in the first list if the second list contains True at the same index.
 -- The result should have the same length as the shorter of the two lists.
@@ -61,10 +60,10 @@ magic = undefined
 -- condIncr [1, 2, 3, 4] [True, False, False, True] == [2, 2, 3, 5]
 --
 condIncr :: [Int] -> [Bool] -> [Int]
-condIncr = undefined
 
-
-
+condIncr xs ys = magic f xs ys
+    where
+        f x y =  if y then x + 1 else x
 --MEDIUM
 -- The function takes two lists, and if the first list is longer than the second one, it trims it by dropping elements from the end until the lengths of the lists are equal.
 --
@@ -73,11 +72,9 @@ condIncr = undefined
 -- trim [1, 2, 3] ['a', 'b'] == [1, 2] 
 --
 trim :: [a] -> [b] -> [a]
-trim = undefined
-
-
-
-
+trim xs ys = magic f xs ys
+    where 
+        f x y = x
 -- HARD
 -- A function to return the elements of a list with their indices, starting from 0.
 --
@@ -85,4 +82,8 @@ trim = undefined
 -- enumerate ['a', 'b', 'c'] == [(0, 'a'), (1, 'b'), (2, 'c')] 
 --
 enumerate :: [a] -> [(Int, a)]
-enumerate = undefined
+enumerate xs = magic f xs [0..]
+    where
+        f x y = (y, x)
+
+
